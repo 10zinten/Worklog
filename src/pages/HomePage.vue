@@ -1,42 +1,46 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+  <q-page padding>
+    <div class="text-h5">Worklog Generator</div>
+    <div class="q-mt-sm q-gutter-md">
+      <div class="row">
+        <q-input v-model="username" label="Github Username" filled />
+        <q-input
+          class="q-ml-md"
+          v-model="date"
+          label="Month"
+          filled
+          type="date"
+        />
+
+        <q-btn no-caps class="q-ml-lg" color="primary" label="Generate" />
+      </div>
+
+      <div>
+        <q-select
+          filled
+          v-model="contribRepos"
+          multiple
+          :options="allRepos"
+          use-chips
+          stack-label
+          label="Contributing Repos"
+        />
+      </div>
+    </div>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
 import { ref } from 'vue';
 
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1'
-  },
-  {
-    id: 2,
-    content: 'ct2'
-  },
-  {
-    id: 3,
-    content: 'ct3'
-  },
-  {
-    id: 4,
-    content: 'ct4'
-  },
-  {
-    id: 5,
-    content: 'ct5'
-  }
-]);
-const meta = ref<Meta>({
-  totalCount: 1200
-});
+const username = ref('');
+
+const today = new Date();
+const dateString =
+  today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+const date = ref(dateString);
+
+const allRepos = ref(['repo1', 'repo2', 'repo3']);
+const contribRepos = ref([]);
 </script>
