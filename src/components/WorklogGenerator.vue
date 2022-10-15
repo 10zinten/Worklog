@@ -1,5 +1,5 @@
 <template>
-  <div class="text-h5">Worklog Generator</div>
+  <div class="text-h4">Worklog Generator</div>
   <div class="q-mt-sm q-gutter-md">
     <div class="row justify-between">
       <div class="row q-gutter-md">

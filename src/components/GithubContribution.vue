@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="text-h5 q-mt-lg q-mb-xl">Your Contributions</div>
+    <div class="text-h5 text-weight-light q-mt-lg q-mb-xl">
+      Your Contributions
+    </div>
     <ContributionList />
   </div>
 </template>
