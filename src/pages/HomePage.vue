@@ -1,9 +1,13 @@
 <template>
   <q-page padding>
     <PageContainer>
-      <WorklogGenerator />
-      <q-separator class="q-mt-lg" />
-      <GithubContribution />
+      <div class="q-gutter-y-md">
+        <WorklogGenerator />
+        <GithubContribution />
+      </div>
+      <q-page-scroller position="bottom" :scroll-offset="150">
+        <q-btn fab icon="keyboard_arrow_up" color="info" />
+      </q-page-scroller>
     </PageContainer>
   </q-page>
 </template>

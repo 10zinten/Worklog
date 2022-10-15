@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="q-gutter-lg">
     <ContributionListItem v-for="id in 10" :id="id" :key="id" />
   </div>
 </template>
