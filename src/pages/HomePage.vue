@@ -1,10 +1,8 @@
 <template>
   <q-page padding>
     <PageContainer>
-      <div class="q-gutter-y-md">
-        <WorklogGenerator />
-        <GithubContribution />
-      </div>
+      <WorklogGenerator />
+      <GithubContribution />
       <q-page-scroller position="bottom" :scroll-offset="150">
         <q-btn fab icon="keyboard_arrow_up" color="info" />
       </q-page-scroller>
