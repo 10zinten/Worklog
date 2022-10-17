@@ -3,8 +3,8 @@
   <div class="q-mt-sm q-gutter-md">
     <div class="row justify-between">
       <div class="row q-gutter-md">
-        <q-input v-model="username" label="Github Username" filled />
-        <q-input v-model="date" label="Month" filled type="date" />
+        <q-input v-model="ghStore.username" label="Github Username" filled />
+        <q-input v-model="ghStore.date" label="Month" filled type="date" />
       </div>
 
       <q-btn no-caps class="q-ml-lg" color="primary" label="Generate" />
@@ -25,16 +25,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
 import { useGithubStore } from 'stores/github';
 
 const ghStore = useGithubStore();
 
-const username = ref('');
-
 const today = new Date();
-const dateString =
+ghStore.date =
   today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-
-const date = ref(dateString);
 </script>
