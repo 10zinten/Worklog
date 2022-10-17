@@ -13,9 +13,9 @@
     <div>
       <q-select
         filled
-        v-model="contribRepos"
+        v-model="ghStore.contribRepos"
         multiple
-        :options="allRepos"
+        :options="ghStore.repos"
         use-chips
         stack-label
         label="Contributing Repos"
@@ -26,6 +26,9 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { useGithubStore } from 'stores/github';
+
+const ghStore = useGithubStore();
 
 const username = ref('');
 
@@ -34,7 +37,4 @@ const dateString =
   today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
 const date = ref(dateString);
-
-const allRepos = ref(['repo1', 'repo2', 'repo3']);
-const contribRepos = ref([]);
 </script>
