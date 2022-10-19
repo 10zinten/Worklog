@@ -3,7 +3,12 @@
   <div class="q-mt-sm q-gutter-md">
     <div class="row justify-between">
       <div class="row q-gutter-md">
-        <q-input v-model="ghStore.username" label="Github Username" filled />
+        <q-input
+          v-model="ghStore.username"
+          label="Github Username"
+          filled
+          @update:model-value="fetchContribRepos"
+        />
         <q-input v-model="ghStore.date" label="Month" filled type="date" />
       </div>
 
@@ -26,10 +31,13 @@
 
 <script lang="ts" setup>
 import { useGithubStore } from 'stores/github';
+import { debounce } from 'quasar';
 
 const ghStore = useGithubStore();
 
 const today = new Date();
 ghStore.date =
   today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+const fetchContribRepos = debounce(ghStore.fetchContribRepos, 500);
 </script>
