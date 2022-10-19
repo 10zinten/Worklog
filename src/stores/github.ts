@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import { dailyContributions } from 'components/models';
 
 export const useGithubStore = defineStore('github', {
   state: () => {
@@ -8,6 +9,7 @@ export const useGithubStore = defineStore('github', {
       repos: [],
       contribRepos: [],
       date: '',
+      monthlyContributions: undefined as dailyContributions[] | undefined,
     };
   },
 
