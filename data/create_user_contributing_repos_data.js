@@ -43,10 +43,11 @@ async function main() {
     }
     return getRepoContributors(org, repo).then((contributors) => {
       for (const contributor of contributors) {
+        const repo_name = `${org}/${repo}`;
         if (contributor in contributors_repos) {
-          contributors_repos[contributor].push(repo);
+          contributors_repos[contributor].push(repo_name);
         } else {
-          contributors_repos[contributor] = [repo];
+          contributors_repos[contributor] = [repo_name];
         }
       }
     });
