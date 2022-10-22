@@ -12,7 +12,13 @@
         <q-input v-model="ghStore.date" label="Month" filled type="date" />
       </div>
 
-      <q-btn no-caps class="q-ml-lg" color="primary" label="Generate" />
+      <q-btn
+        no-caps
+        class="q-ml-lg"
+        color="primary"
+        label="Generate"
+        @click="ghStore.fetchMonthlyContributions()"
+      />
     </div>
 
     <div>
