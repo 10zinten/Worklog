@@ -17,6 +17,7 @@
         class="q-ml-lg"
         color="primary"
         label="Generate"
+        :loading="ghStore.loading"
         @click="ghStore.fetchMonthlyContributions()"
       />
     </div>

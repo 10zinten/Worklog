@@ -6,18 +6,19 @@
     </div>
 
     <q-card-section class="bg-blue-grey-1">
-      <div>
-        https://github.com/OpenPecha/dakje/commits?author=10zinten&since=2022-10-09&until=2022-10-10
+      <div v-if="contributions">
+        <div v-for="(contrib, index) in contributions" :key="index">
+          {{ contrib }}
+        </div>
       </div>
-      <div>
-        https://github.com/OpenPecha/dakje/commits?author=10zinten&since=2022-10-09&until=2022-10-10
-      </div>
+      <div v-else>Loading...</div>
     </q-card-section>
   </q-card>
 </template>
 
 <script lang="ts" setup>
 defineProps<{
-  id: number;
+  date: string;
+  contributions: string[];
 }>();
 </script>

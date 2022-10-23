@@ -43,14 +43,13 @@ export const useGithubStore = defineStore('github', {
       repos: [],
       contribRepos: [],
       date: '',
-      monthlyContributions: [] as dailyContributions[] | undefined,
+      monthlyContributions: [] as dailyContributions[],
+      loading: false,
     };
   },
 
   actions: {
     async fetchContribRepos(value: string) {
-      console.log(process.env.GITHUB_TOKEN);
-      console.log('fetchContribRepos', value);
       // fetch data
       const response = await axios.get(
         'https://raw.githubusercontent.com/10zinten/Worklog/main/data/contributors_repos.json'
@@ -60,24 +59,24 @@ export const useGithubStore = defineStore('github', {
     },
 
     async fetchMonthlyContributions() {
+      this.monthlyContributions = [];
       const [_, month, year] = this.date.split('-');
       const days = getDaysForMonth(parseInt(month));
       days.forEach((day: string) => {
-        const dailyContrib = {
+        this.monthlyContributions.push({
           date: `${year}-${month}-${day}`,
           contributions: [] as string[],
-        };
+        });
+        const dailyContrib = this.monthlyContributions.at(-1);
         this.contribRepos.forEach(async (repo: string) => {
           const [org, repo_name] = repo.split('/');
           const branches = await fetchRepoBranchs(org, repo_name);
           branches.forEach(async (branch: string) => {
             if (branch.startsWith('dependabot')) return;
             const dailyRepoBranchContrib = `https://github.com/${org}/${repo_name}/commits/${branch}?author=${this.username}&since=${dailyContrib['date']}&until=${dailyContrib['date']}`;
-            dailyContrib['contributions'].push(dailyRepoBranchContrib);
+            dailyContrib?.contributions.push(dailyRepoBranchContrib);
           });
         });
-        this.monthlyContributions?.push(dailyContrib);
-        console.log(this.monthlyContributions);
       });
     },
   },
