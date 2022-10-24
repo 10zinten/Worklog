@@ -9,10 +9,25 @@
           filled
           @update:model-value="fetchContribRepos"
         />
-        <q-input v-model="ghStore.date" label="Month" filled type="date" />
+        <q-input
+          v-model="ghStore.githubToken"
+          label="Github Token"
+          filled
+          type="password"
+        />
       </div>
 
-      <q-btn no-caps class="q-ml-lg" color="primary" label="Generate" />
+      <div class="row q-gutter-md">
+        <q-input v-model="ghStore.date" label="Month" filled type="date" />
+
+        <q-btn
+          no-caps
+          color="primary"
+          label="Generate"
+          :loading="ghStore.loading"
+          @click="ghStore.fetchMonthlyContributions()"
+        />
+      </div>
     </div>
 
     <div>
@@ -32,12 +47,35 @@
 <script lang="ts" setup>
 import { useGithubStore } from 'stores/github';
 import { debounce } from 'quasar';
+import { onBeforeMount, watch } from 'vue';
+import { LocalStorage } from 'quasar';
+import { LOCAL_STORAGE_KEYS } from 'stores/github';
 
 const ghStore = useGithubStore();
+
+onBeforeMount(() => {
+  ghStore.fetchContribRepos('');
+});
 
 const today = new Date();
 ghStore.date =
   today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
 const fetchContribRepos = debounce(ghStore.fetchContribRepos, 500);
+
+watch(
+  () => ghStore.username,
+  (username) => {
+    LocalStorage.set(LOCAL_STORAGE_KEYS.USERNAME, username);
+  },
+  { deep: true }
+);
+
+watch(
+  () => ghStore.githubToken,
+  (token) => {
+    LocalStorage.set(LOCAL_STORAGE_KEYS.GITHUB_TOKEN, token);
+  },
+  { deep: true }
+);
 </script>
