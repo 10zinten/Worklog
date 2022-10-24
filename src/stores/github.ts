@@ -34,11 +34,11 @@ export const useGithubStore = defineStore('github', {
     return {
       username: LocalStorage.getItem(LOCAL_STORAGE_KEYS.USERNAME),
       githubToken: LocalStorage.getItem(LOCAL_STORAGE_KEYS.GITHUB_TOKEN),
-      repos: [],
-      contribRepos: [],
-      date: '',
+      repos: [] as string[],
+      contribRepos: [] as string[],
+      date: '' as string,
       monthlyContributions: [] as dailyContributions[],
-      loading: false,
+      loading: false as boolean,
       repoToBranches: {} as { [orgRepo: string]: string[] },
     };
   },
@@ -68,17 +68,12 @@ export const useGithubStore = defineStore('github', {
         'https://raw.githubusercontent.com/10zinten/Worklog/main/data/contributors_repos.json'
       );
 
-      // TODO: remove slice
-      this.repos = response.data[this.username].slice(0, 1);
-      this.contribRepos = response.data[this.username].slice(0, 1);
+      this.repos = response.data[this.username];
+      this.contribRepos = response.data[this.username];
     },
 
     async fetchRepoBranchs(org: string, repo: string): Promise<string[]> {
       const orgRepo = `${org}/${repo}`;
-      console.log(this.repoToBranches[orgRe]);
-      if (orgRepo in this.repoToBranches) {
-        return this.repoToBranches[orgRepo];
-      }
       const reponse = await this.githubClient.get(
         `/repos/${org}/${repo}/branches`
       );
@@ -90,25 +85,31 @@ export const useGithubStore = defineStore('github', {
     },
 
     async fetchMonthlyContributions() {
-      this.monthlyContributions = [];
-      const [_, month, year] = this.date.split('-');
+      // fetch all repo's branches and cache them in repoToBranches
+      for (const repo of this.contribRepos) {
+        const [org, repoName] = repo.split('/');
+        await this.fetchRepoBranchs(org, repoName);
+      }
+
+      const [year, month, _] = this.date.split('-');
       const days = getDaysForMonth(parseInt(month));
-      days.forEach((day: string) => {
+      days.forEach(async (day) => {
         this.monthlyContributions.push({
           date: `${year}-${month}-${day}`,
           contributions: [] as string[],
         });
         const dailyContrib = this.monthlyContributions.at(-1);
-        this.contribRepos.forEach(async (repo: string) => {
-          const [org, repo_name] = repo.split('/');
-          const branches = await this.fetchRepoBranchs(org, repo_name);
+
+        this.contribRepos.forEach((orgRepo) => {
+          const [org, repo] = orgRepo.split('/');
+          const branches = this.repoToBranches[orgRepo];
           branches.forEach(async (branch: string) => {
             if (branch.startsWith('dependabot')) return;
-            const dailyRepoBranchContrib = `https://github.com/${org}/${repo_name}/commits/${branch}?author=${this.username}&since=${dailyContrib['date']}&until=${dailyContrib['date']}`;
+            const dailyRepoBranchContrib = `https://github.com/${org}/${repo}/commits/${branch}?author=${this.username}&since=${dailyContrib?.date}&until=${dailyContrib?.date}`;
             dailyContrib?.contributions.push(dailyRepoBranchContrib);
-          });
-        });
-      });
+          }); // branches
+        }); // repos
+      }); // days
     },
   },
 });
