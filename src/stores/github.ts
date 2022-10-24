@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import { dailyContributions } from 'components/models';
+import { LocalStorage } from 'quasar';
 
 const githubAPI = axios.create({
   baseURL: 'https://api.github.com',
@@ -36,10 +37,16 @@ function getDaysForMonth(month: number): string[] {
   });
 }
 
+export const LOCAL_STORAGE_KEYS = {
+  USERNAME: 'w:username',
+  GITHUB_TOKEN: 'w:github_token',
+};
+
 export const useGithubStore = defineStore('github', {
   state: () => {
     return {
-      username: '',
+      username: LocalStorage.getItem(LOCAL_STORAGE_KEYS.USERNAME),
+      token: LocalStorage.getItem(LOCAL_STORAGE_KEYS.GITHUB_TOKEN),
       repos: [],
       contribRepos: [],
       date: '',
@@ -50,6 +57,8 @@ export const useGithubStore = defineStore('github', {
 
   actions: {
     async fetchContribRepos(value: string) {
+      if (!this.username) return;
+
       // fetch data
       const response = await axios.get(
         'https://raw.githubusercontent.com/10zinten/Worklog/main/data/contributors_repos.json'
