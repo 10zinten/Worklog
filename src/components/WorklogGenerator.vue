@@ -10,7 +10,7 @@
           @update:model-value="fetchContribRepos"
         />
         <q-input
-          v-model="ghStore.token"
+          v-model="ghStore.githubToken"
           label="Github Token"
           filled
           type="password"
@@ -67,6 +67,14 @@ watch(
   () => ghStore.username,
   (username) => {
     LocalStorage.set(LOCAL_STORAGE_KEYS.USERNAME, username);
+  },
+  { deep: true }
+);
+
+watch(
+  () => ghStore.githubToken,
+  (token) => {
+    LocalStorage.set(LOCAL_STORAGE_KEYS.GITHUB_TOKEN, token);
   },
   { deep: true }
 );
