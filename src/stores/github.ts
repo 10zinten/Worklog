@@ -86,10 +86,12 @@ export const useGithubStore = defineStore('github', {
 
     async fetchMonthlyContributions() {
       // fetch all repo's branches and cache them in repoToBranches
+      this.loading = true;
       for (const repo of this.contribRepos) {
         const [org, repoName] = repo.split('/');
         await this.fetchRepoBranchs(org, repoName);
       }
+      this.loading = false;
 
       const [year, month, _] = this.date.split('-');
       const days = getDaysForMonth(parseInt(month));
