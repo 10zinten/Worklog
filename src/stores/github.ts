@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import axios, { AxiosInstance } from 'axios';
 import { dailyContributions } from 'components/models';
 import { LocalStorage } from 'quasar';
-import { threadId } from 'worker_threads';
 
 function getDaysForMonth(month: number): string[] {
   let nDays = 0;
@@ -69,9 +68,8 @@ export const useGithubStore = defineStore('github', {
         'https://raw.githubusercontent.com/10zinten/Worklog/main/data/contributors_repos.json'
       );
 
-      // TODO: remove slice
-      this.repos = response.data[this.username].slice(0, 1);
-      this.contribRepos = response.data[this.username].slice(0, 1);
+      this.repos = response.data[this.username];
+      this.contribRepos = response.data[this.username];
     },
 
     async fetchRepoBranchs(org: string, repo: string): Promise<string[]> {
@@ -93,9 +91,18 @@ export const useGithubStore = defineStore('github', {
       date: string
     ) {
       const dailyRepoBranchContrib = `https://github.com/${org}/${repo}/commits/${branch}?author=${this.username}&since=${date}&until=${date}`;
-      const response = await axios.get(dailyRepoBranchContrib);
-      console.log(response.data);
-      return dailyRepoBranchContrib;
+      // const response = await axios.get(dailyRepoBranchContrib);
+      const response = await axios.post(
+        '/.netlify/functions/hasDailyRepoBranchCommits',
+        {
+          branchCommitsPageUrl: dailyRepoBranchContrib,
+        }
+      );
+
+      if (response.data.hasCommits) {
+        return dailyRepoBranchContrib;
+      }
+      return;
     },
 
     async fetchMonthlyContributions() {
