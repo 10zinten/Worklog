@@ -61,7 +61,7 @@ export const useGithubStore = defineStore('github', {
 
   actions: {
     async fetchContribRepos(value: string) {
-      if (!this.username) return;
+      if (!this.username && !value) return;
 
       // fetch data
       const response = await axios.get(
@@ -93,7 +93,8 @@ export const useGithubStore = defineStore('github', {
       }
       this.loading = false;
 
-      const [year, month, _] = this.date.split('-');
+      const year = this.date.split('-')[0];
+      const month = this.date.split('-')[1];
       const days = getDaysForMonth(parseInt(month));
       days.forEach(async (day) => {
         this.monthlyContributions.push({
