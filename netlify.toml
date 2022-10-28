@@ -1,0 +1,9 @@
+[build]
+command='quasar build'
+functions='functions'
+publish='dist/spa'
+
+[dev]
+framework='#custom'
+command="quasar dev -p 8888"
+targetPort=8888

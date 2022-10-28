@@ -84,6 +84,27 @@ export const useGithubStore = defineStore('github', {
       return branches;
     },
 
+    async getDailyRepoBranchContrib(
+      org: string,
+      repo: string,
+      branch: string,
+      date: string
+    ) {
+      const dailyRepoBranchContrib = `https://github.com/${org}/${repo}/commits/${branch}?author=${this.username}&since=${date}&until=${date}`;
+      // const response = await axios.get(dailyRepoBranchContrib);
+      const response = await axios.post(
+        '/.netlify/functions/hasDailyRepoBranchCommits',
+        {
+          branchCommitsPageUrl: dailyRepoBranchContrib,
+        }
+      );
+
+      if (response.data.hasCommits) {
+        return dailyRepoBranchContrib;
+      }
+      return;
+    },
+
     async fetchMonthlyContributions() {
       // fetch all repo's branches and cache them in repoToBranches
       this.loading = true;
@@ -101,14 +122,22 @@ export const useGithubStore = defineStore('github', {
           date: `${year}-${month}-${day}`,
           contributions: [] as string[],
         });
-        const dailyContrib = this.monthlyContributions.at(-1);
+        const dailyContrib = <dailyContributions>(
+          this.monthlyContributions.at(-1)
+        );
 
         this.contribRepos.forEach((orgRepo) => {
           const [org, repo] = orgRepo.split('/');
           const branches = this.repoToBranches[orgRepo];
           branches.forEach(async (branch: string) => {
             if (branch.startsWith('dependabot')) return;
-            const dailyRepoBranchContrib = `https://github.com/${org}/${repo}/commits/${branch}?author=${this.username}&since=${dailyContrib?.date}&until=${dailyContrib?.date}`;
+            const dailyRepoBranchContrib = await this.getDailyRepoBranchContrib(
+              org,
+              repo,
+              branch,
+              dailyContrib.date
+            );
+            if (!dailyRepoBranchContrib) return;
             dailyContrib?.contributions.push(dailyRepoBranchContrib);
           }); // branches
         }); // repos
