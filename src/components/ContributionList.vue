@@ -1,9 +1,10 @@
 <template>
   <div class="q-gutter-lg">
     <ContributionListItem
-      v-for="dailyContrib in monthlyContributions"
+      v-for="(dailyContrib, index) in monthlyContributions"
       :date="dailyContrib.date"
       :contributions="dailyContrib.contributions"
+      :index="index"
       :key="dailyContrib.date"
     />
   </div>
