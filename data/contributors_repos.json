@@ -67,7 +67,7 @@
     "OpenPecha/OCR-Helper-Scripts",
     "OpenPecha/Google-OCR-Line-Fixer",
     "OpenPecha/text-lists-for-pedurma-editor",
-    "https://github.com/OpenPecha/prodigy-tools"
+    "OpenPecha/prodigy-tools"
   ],
   "jungtop": [
     "OpenPecha/Work-File-Creation",
