@@ -66,7 +66,8 @@
     "OpenPecha/pagination-layer-formatter",
     "OpenPecha/OCR-Helper-Scripts",
     "OpenPecha/Google-OCR-Line-Fixer",
-    "OpenPecha/text-lists-for-pedurma-editor"
+    "OpenPecha/text-lists-for-pedurma-editor",
+    "OpenPecha/prodigy-tools"
   ],
   "jungtop": [
     "OpenPecha/Work-File-Creation",
