@@ -57,9 +57,17 @@ onBeforeMount(() => {
   ghStore.fetchContribRepos('');
 });
 
+function zeroPad(num: number) {
+  return num < 10 ? '0' + num : num;
+}
+
 const today = new Date();
 ghStore.date =
-  today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  today.getFullYear() +
+  '-' +
+  zeroPad(today.getMonth() + 1) +
+  '-' +
+  zeroPad(today.getDate());
 
 const fetchContribRepos = debounce(ghStore.fetchContribRepos, 500);
 
