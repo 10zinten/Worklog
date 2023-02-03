@@ -1,7 +1,7 @@
 <template>
   <q-card flat bordered>
     <div class="row justify-between">
-      <div class="q-pa-sm text-weight-light">{{ date }}</div>
+      <div class="q-pa-sm text-weight-light">{{ pretifyDate(date) }}</div>
       <q-btn
         flat
         dense
@@ -35,6 +35,11 @@ defineProps<{
 
 const ghStore = useGithubStore();
 const $q = useQuasar();
+
+function pretifyDate(date: string) {
+  const [year, month, day] = date.split('-');
+  return `${day}/${month}/${year}`;
+}
 
 const copy = (index: number) => {
   const contrib = ghStore.monthlyContributions[index].contributions.join('\n');
