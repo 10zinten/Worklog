@@ -1,25 +1,18 @@
 {
   "10zinten": [
-    "OpenPecha/pyewts",
     "OpenPecha/Toolkit",
-    "OpenPecha/openpecha-api-v2",
-    "OpenPecha/Tibetan-Ngram-Generator",
-    "OpenPecha/docs",
-    "OpenPecha/openpecha-bot",
-    "OpenPecha/ie-citations-sources",
     "OpenPecha/Requests",
     "OpenPecha/openpecha.org",
     "OpenPecha/OCR-Pipelines",
     "OpenPecha/pybo",
     "OpenPecha/Data-Pipeline-Manager",
     "OpenPecha/OpenPecha-Editors",
-    "OpenPecha/ocr-queue",
     "OpenPecha/Botok",
     "OpenPecha/OpenPecha-Models",
     "OpenPecha/OpenPecha-API",
     "OpenPecha/Lopenling-App",
     "OpenPecha/OCR-Helper-Scripts",
-    "OpenPecha/openpecha.github.io"
+    "OpenPecha/openpecha-project-template"
   ],
   "kaldan007": [
     "OpenPecha/Toolkit",
@@ -66,7 +59,8 @@
     "OpenPecha/pagination-layer-formatter",
     "OpenPecha/OCR-Helper-Scripts",
     "OpenPecha/Google-OCR-Line-Fixer",
-    "OpenPecha/text-lists-for-pedurma-editor"
+    "OpenPecha/text-lists-for-pedurma-editor",
+    "OpenPecha/prodigy-tools"
   ],
   "jungtop": [
     "OpenPecha/Work-File-Creation",
